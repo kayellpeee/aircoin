@@ -9,26 +9,29 @@ var User = db.Model.extend({
   hasTimestamps: true,
   wallet: function(){
     return this.hasOne(Wallet);
-  }
+  },
 
-/*
   initialize: function(){
-    this.on('creating', this.hashAndEncrypt);
+    this.on('creating', this.hashPassword);
   },
 
-  hashAndEncrypt: function(){
-    this.hashPassword(this.get('password');
-    this.encryptPhone(this.get('phone'));
-  },
+  // hashAndEncrypt: function(){
+  //   this.hashPassword();
+  //   this.encryptPhone();
+  // },
 
-  // build out hashing functionality (w/ promises)
-  hashPassword: function(password){
-
+  hashPassword: function(){
+    var cipher = Promise.promisify(bcrypt.hash);
+    return cipher( this.get('password'), null, null ).bind(this)
+      .then(function(hash){
+        console.log('hash ******  ', hash);
+        this.set('password', hash);
+      });
   }
-  encryptPhone: function(phone){
 
-  }
-*/
+  // encryptPhone: function(phone){
+    // encrypt phone number before saving (is even necessary?)
+  // }
 
 })
 
