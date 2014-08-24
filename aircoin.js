@@ -6,6 +6,7 @@ var Wallet = require('./app/models/wallet');
 var Users = require('./app/collections/users');
 var Wallets = require('./app/collections/wallets');
 
+/*
 new User({phone: phone}).fetch().then(function(found){
   if( !found ){
     var user = new User({
@@ -18,6 +19,26 @@ new User({phone: phone}).fetch().then(function(found){
   }else{
     console.log(found.attributes);
   }
+});
+
+*/
+
+var address = '11255';
+var key = 'test2';
+
+new Wallet({address: address}).fetch().then(function(found){
+  if( !found ){
+    var wallet = new Wallet({
+      address: address,
+      key: key
+    }).save().then(function(wallet){
+      Wallets.add(wallet);
+      console.log('added wallet = ', wallet);
+    });
+  }else{
+    console.log('found wallet - ', found.attributes);
+  }
+
 });
 
 var createWallet = function(){
