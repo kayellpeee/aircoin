@@ -1,3 +1,5 @@
+var bitcoin = require('bitcoinjs-lib');
+
 var db = require('./app/config');
 var User = require('./app/models/user');
 var Wallet = require('./app/models/wallet');
@@ -11,13 +13,24 @@ exports.findUser = function(phone, password){
       // has attributes: phone, password, updated_at, created_at and id
       return found.attributes;
     }else{
-      createUser(phone, password);
+      // will i have to wrap in promise?
+      return createUser(phone, password);
     }
   });
-  
+
 }
 
 exports.findWallet = function(user_id){
+
+  // queries db for wallet related to given user
+  new User({id: user_id}).related('wallet').fetch()
+    .then(function(found){
+      if( found ){
+        return found.attributes;
+      }else{
+        return createWallet(user_id);
+      }
+    });
 
 }
 
