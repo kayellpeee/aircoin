@@ -6,6 +6,15 @@ var Wallets = require('./app/collections/wallets');
 
 exports.findUser = function(phone, password){
 
+  new User({phone: phone}).fetch().then(function(found){
+    if( found ){
+      // has attributes: phone, password, updated_at, created_at and id
+      return found.attributes;
+    }else{
+      createUser(phone, password);
+    }
+  });
+  
 }
 
 exports.findWallet = function(user_id){
