@@ -20,6 +20,17 @@ var User = db.Model.extend({
   //   this.encryptPhone();
   // },
 
+  comparePassword: function(attemptedPassword){
+    bcrypt.compare(attemptedPassword, this.get('password'), function(error, match){
+      if( match ){
+        console.log('it\'s a match!!');
+      }else{
+        console.log('wrong password bruh: ', attemptedPassword);
+      }
+
+    });
+  },
+
   hashPassword: function(){
     var cipher = Promise.promisify(bcrypt.hash);
     return cipher( this.get('password'), null, null ).bind(this)
