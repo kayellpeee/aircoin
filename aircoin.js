@@ -6,6 +6,9 @@ var Wallet = require('./app/models/wallet');
 var Users = require('./app/collections/users');
 var Wallets = require('./app/collections/wallets');
 
+var phone = 6122327100;
+var password = 'myPhoneNumber';
+
 /*
 new User({phone: phone}).fetch().then(function(found){
   if( !found ){
@@ -21,16 +24,17 @@ new User({phone: phone}).fetch().then(function(found){
   }
 });
 
-*/
 
-var address = '11255';
-var key = 'test2';
+var address = 'SomeWalletAddress123';
+var key = 'relatedPrivateKey123';
+
 
 new Wallet({address: address}).fetch().then(function(found){
   if( !found ){
     var wallet = new Wallet({
       address: address,
-      key: key
+      key: key,
+      user_id: 1
     }).save().then(function(wallet){
       Wallets.add(wallet);
       console.log('added wallet = ', wallet);
@@ -40,6 +44,11 @@ new Wallet({address: address}).fetch().then(function(found){
   }
 
 });
+*/
+
+new User({id: 1}).related('wallet').fetch().then(function(found){
+  console.log('found user = ', found);
+})
 
 var createWallet = function(){
   var key = bitcoin.ECKey.makeRandom();

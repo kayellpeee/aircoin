@@ -2,6 +2,8 @@ var db = require('../config.js');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 
+var Wallet = require('./wallet');
+
 var User = db.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
