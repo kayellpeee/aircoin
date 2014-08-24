@@ -36,6 +36,16 @@ exports.findWallet = function(user_id){
 
 exports.createUser = function(phone, password){
 
+  var user = new User({
+    phone: phone,
+    password: password
+  });
+  
+  user.save().then(function(user){
+    Users.add(user);
+    return user.attributes;
+  });
+
 }
 
 exports.createWallet = function(user_id){
