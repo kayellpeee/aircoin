@@ -5,20 +5,27 @@ var Promise = require('bluebird');
 var User = db.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
+  wallet: function(){
+    return this.hasOne(Wallet);
+  }
 
-  // define relationship with wallets here
-  // this has one Wallet (wallet_id)
-
+/*
   initialize: function(){
-    this.on('creating', this.hashProperties);
+    this.on('creating', this.hashAndEncrypt);
   },
 
-  hashProperties: function(){
+  hashAndEncrypt: function(){
     this.hashPassword(this.get('password');
-    this.hashPhone(this.get('phone'));
+    this.encryptPhone(this.get('phone'));
   },
 
   // build out hashing functionality (w/ promises)
-  hashPassword:
-  hashPhone: 
+  hashPassword: function(password){
+
+  }
+  encryptPhone: function(phone){
+
+  }
+*/
+
 })
