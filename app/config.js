@@ -39,4 +39,4 @@ db.knex.schema.hasTable('wallets').then(function(exists){
   }
 });
 
-modeule.exports = db;
+module.exports = db;

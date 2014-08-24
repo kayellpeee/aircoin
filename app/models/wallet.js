@@ -29,3 +29,5 @@ var Wallet = db.Model.extend({
 */
 
 });
+
+module.exports = Wallet;
