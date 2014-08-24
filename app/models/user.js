@@ -15,11 +15,6 @@ var User = db.Model.extend({
     this.on('creating', this.hashPassword);
   },
 
-  // hashAndEncrypt: function(){
-  //   this.hashPassword();
-  //   this.encryptPhone();
-  // },
-
   comparePassword: function(attemptedPassword){
     bcrypt.compare(attemptedPassword, this.get('password'), function(error, match){
       if( match ){
@@ -39,11 +34,6 @@ var User = db.Model.extend({
         this.set('password', hash);
       });
   }
-
-  // encryptPhone: function(phone){
-    // encrypt phone number before saving (is even necessary?)
-  // }
-
 })
 
 module.exports = User;

@@ -10,26 +10,6 @@ var Wallet = db.Model.extend({
   user: function(){
     return this.belongsTo(User, 'user_id');
   },
-
-/*
-  initialize: function(){
-    this.on('creating', this.encryptProperties);
-  },
-
-  encryptProperties: function(){
-    this.encryptAddress(this.get('address'));
-    this.encryptKey(this.get('key'));
-  },
-
-  encryptAddress: function(address){
-
-  },
-
-  encryptKey: function(key){
-
-  }
-*/
-
 });
 
 module.exports = Wallet;
