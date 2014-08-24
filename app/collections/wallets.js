@@ -1,5 +1,5 @@
 var db = require('../config.js');
-var Wallet = require('../models/wallet.js');
+var Wallet = require('../models/wallet');
 
 var Wallets = new db.Collection();
 

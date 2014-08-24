@@ -1,17 +1,20 @@
 {
-  "name": "mobilebtc",
+  "name": "aircoin",
   "version": "0.0.0",
-  "description": "",
-  "main": "bitcoin.js",
-  "author": "",
-  "license": "ISC",
+  "description": "text a number to generate a bitcoin wallet",
+  "main": "aircoin.js",
   "dependencies": {
-    "bitcoinjs-lib":"1.0.2",
-    "bluebird": "1.0.8",
-    "bookshelf": "~0.6.4",
-    "express": "~3.4.8",
-    "knex": "~0.5.7",
-    "path": ""
-    "sqlite3": "~2.2.0"
-  }
+    "bcrypt-nodejs": "0.0.3",
+    "bitcoinjs-lib": "^1.0.2",
+    "bluebird": "^2.3.1",
+    "bookshelf": "^0.7.7",
+    "knex": "^0.6.22",
+    "sqlite3": "^2.2.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Keenan Lidral-Porter",
+  "license": "ISC"
 }
