@@ -17,12 +17,7 @@ var User = db.Model.extend({
 
   comparePassword: function(attemptedPassword){
     bcrypt.compare(attemptedPassword, this.get('password'), function(error, match){
-      if( match ){
-        console.log('it\'s a match!!');
-      }else{
-        console.log('wrong password bruh: ', attemptedPassword);
-      }
-
+      return match;
     });
   },
 

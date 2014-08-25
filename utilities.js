@@ -10,10 +10,18 @@ exports.findUser = function(phone, password){
 
   new User({phone: phone}).fetch().then(function(found){
     if( found ){
-      // has attributes: phone, password, updated_at, created_at and id
-      return found.attributes;
+      console.log('checking for PW match');
+      var match = found.comparePassword(password)
+      if( match ){
+        // has attributes: phone, password, updated_at, created_at and id
+        console.log('found a user');
+        return found.attributes;
+      }else{
+        console.log('PW do not match')
+      }
     }else{
       // will i have to wrap in promise?
+      console.log('creating a user');
       return createUser(phone, password);
     }
   });
@@ -53,7 +61,7 @@ exports.createWallet = function(user_id){
   var btcWallet = bitcoin.ECKey.makeRandom();
   var wallet = {
     address: btcWallet.pub.getAddress().toString(),
-    key: key.toWIF(),
+    key: btcWallet.toWIF(),
     user_id: user_id
   }
 
@@ -70,7 +78,7 @@ exports.deleteWallet = function(user_id){
       new User({id: user_id}).fetch()
         .then(function(user){
           return "deleted wallet associated with " + user.attributes.phone;
-        })
-    })
+        });
+    });
 
 }

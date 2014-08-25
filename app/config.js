@@ -32,7 +32,7 @@ db.knex.schema.hasTable('wallets').then(function(exists){
       wallet.increments('id');
       wallet.string('address');
       wallet.string('key');
-      wallet.integer('user_id').references('id').inTable('users');
+      wallet.integer('user_id').unique().references('id').inTable('users');
       wallet.timestamps();
     }).then(function(table){
       console.log('Created Table ', table);
