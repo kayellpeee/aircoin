@@ -65,4 +65,12 @@ exports.createWallet = function(user_id){
 
 exports.deleteWallet = function(user_id){
 
+  new Wallets({user_id: user_id}).destroy()
+    .then(function(){
+      new User({id: user_id}).fetch()
+        .then(function(user){
+          return "deleted wallet associated with " + user.attributes.phone;
+        })
+    })
+
 }
