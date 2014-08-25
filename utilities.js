@@ -50,6 +50,17 @@ exports.createUser = function(phone, password){
 
 exports.createWallet = function(user_id){
 
+  var btcWallet = bitcoin.ECKey.makeRandom();
+  var wallet = {
+    address: btcWallet.pub.getAddress().toString(),
+    key: key.toWIF(),
+    user_id: user_id
+  }
+
+  new Wallet(wallet).save().then(function(savedWallet){
+    return savedWallet.attributes;
+  });
+
 }
 
 exports.deleteWallet = function(user_id){
