@@ -10,10 +10,11 @@ exports.findUser = function(phone, password){
 
   new User({phone: phone}).fetch().then(function(found){
     if( found ){
-
+      console.log('found user');
       // check if right password
       var match = found.comparePassword(password, function(match){
         if( match ){
+          console.log('correct password');
           exports.findWallet(found.attributes.id);
         }else{
           console.log('PW do not match')
@@ -21,6 +22,7 @@ exports.findUser = function(phone, password){
       });
 
     }else{
+      console.log('user not found. making user')
       exports.createUser(phone, password);
     }
   });
@@ -33,8 +35,10 @@ exports.findWallet = function(user_id){
   new User({id: user_id}).related('wallet').fetch()
     .then(function(found){
       if( found ){
+        console.log('found user\'s wallet');
         exports.logWallet(found.attributes);
       }else{
+        console.log('user wallet not found. creating wallet');
         exports.createWallet(user_id);
       }
     });
@@ -49,6 +53,7 @@ exports.createUser = function(phone, password){
   });
   
   user.save().then(function(user){
+    console.log('created user');
     Users.add(user);                                  // <<<< necessary? no reconcile diff (new vs no new)
     exports.createWallet(user.attributes.id);
   });
@@ -57,8 +62,8 @@ exports.createUser = function(phone, password){
 
 exports.logWallet = function(walletAttributes){
 
-  var address = wallet.address;
-  var key = wallet.key;
+  var address = walletAttributes.address;
+  var key = walletAttributes.key;
   console.log('found wallet key: ', key, "  ***address***  ", address);
 
 }
@@ -73,22 +78,21 @@ exports.createWallet = function(user_id){
   }
 
   new Wallet(wallet).save().then(function(savedWallet){
-                                                                  // <<<<< missing something? no reconcile diff (new vs no new)
+    console.log('created wallet');                   // <<<<< missing something? no reconcile diff (new vs no new)
     exports.logWallet(savedWallet.attributes);
   });
 
 }
 
-exports.deleteWallet = function(user_id){
+exports.deleteWallet = function(userid){
 
-  new Wallets({user_id: user_id}).fetch().then(function(wallet){
+  new Wallet({user_id: userid}).fetch().then(function(wallet){
     if( wallet ){
-      wallet.destroy()
-      console.log("deleted wallet associated with " + user_id);
+      wallet.destroy();
+      console.log('deleted wallet associated with ' + userid);
     }else{
-      console.log('no wallet associated with ' + user_id + '. text "get  wallet + password" to create one');
+      console.log('no wallet associated with ' + userid + '. text "get  wallet + password" to create one');
     }
-
   });
 
 }
