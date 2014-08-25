@@ -10,19 +10,18 @@ exports.findUser = function(phone, password){
 
   new User({phone: phone}).fetch().then(function(found){
     if( found ){
-      console.log('checking for PW match');
-      var match = found.comparePassword(password)
-      if( match ){
-        // has attributes: phone, password, updated_at, created_at and id
-        console.log('found a user');
-        return found.attributes;
-      }else{
-        console.log('PW do not match')
-      }
+
+      // check if right password
+      var match = found.comparePassword(password, function(match){
+        if( match ){
+          exports.findWallet(found.attributes.id);
+        }else{
+          console.log('PW do not match')
+        }
+      });
+
     }else{
-      // will i have to wrap in promise?
-      console.log('creating a user');
-      return createUser(phone, password);
+      exports.createUser(phone, password);
     }
   });
 
@@ -34,9 +33,9 @@ exports.findWallet = function(user_id){
   new User({id: user_id}).related('wallet').fetch()
     .then(function(found){
       if( found ){
-        return found.attributes;
+        exports.logWallet(found.attributes);
       }else{
-        return createWallet(user_id);
+        exports.createWallet(user_id);
       }
     });
 
@@ -50,9 +49,17 @@ exports.createUser = function(phone, password){
   });
   
   user.save().then(function(user){
-    Users.add(user);
-    return user.attributes;
+    Users.add(user);                                  // <<<< necessary? no reconcile diff (new vs no new)
+    exports.createWallet(user.attributes.id);
   });
+
+}
+
+exports.logWallet = function(walletAttributes){
+
+  var address = wallet.address;
+  var key = wallet.key;
+  console.log('found wallet key: ', key, "  ***address***  ", address);
 
 }
 
@@ -66,19 +73,22 @@ exports.createWallet = function(user_id){
   }
 
   new Wallet(wallet).save().then(function(savedWallet){
-    return savedWallet.attributes;
+                                                                  // <<<<< missing something? no reconcile diff (new vs no new)
+    exports.logWallet(savedWallet.attributes);
   });
 
 }
 
 exports.deleteWallet = function(user_id){
 
-  new Wallets({user_id: user_id}).destroy()
-    .then(function(){
-      new User({id: user_id}).fetch()
-        .then(function(user){
-          return "deleted wallet associated with " + user.attributes.phone;
-        });
-    });
+  new Wallets({user_id: user_id}).fetch().then(function(wallet){
+    if( wallet ){
+      wallet.destroy()
+      console.log("deleted wallet associated with " + user_id);
+    }else{
+      console.log('no wallet associated with ' + user_id + '. text "get  wallet + password" to create one');
+    }
+
+  });
 
 }

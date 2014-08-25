@@ -7,7 +7,7 @@ var Users = require('./app/collections/users');
 var Wallets = require('./app/collections/wallets');
 var utilities = require('./utilities');
 
-var phone = 612232710;
+var phone = 612;
 var password = 'myPhoneNumber';
 
 // utilities.createUser(phone, password);
@@ -24,4 +24,4 @@ new User({id: 1}).related('wallet').fetch().then(function(found){
 //   utilities.createWallet(user.attributes.id);
 // })
 
-console.log(utilities.findUser(phone, password));
+// utilities.findUser(phone, password);
